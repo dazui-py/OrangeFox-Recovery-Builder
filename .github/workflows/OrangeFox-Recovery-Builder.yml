@@ -107,18 +107,18 @@ jobs:
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-    - name: Ensure TW_MAX_BRIGHTNESS is set
-      run: |
-        pwd ; ls -l && \
-        grep -q 'TW_MAX_BRIGHTNESS' ${GITHUB_WORKSPACE}/OrangeFox/fox_12.1/device/asus/I006D/BoardConfig.mk || \
-        echo 'TW_MAX_BRIGHTNESS := 255' >> ${GITHUB_WORKSPACE}/OrangeFox/fox_12.1/device/asus/I006D/BoardConfig.mk
+#    - name: Ensure TW_MAX_BRIGHTNESS is set
+#      run: |
+#        pwd ; ls -l && \
+#        grep -q 'TW_MAX_BRIGHTNESS' ${GITHUB_WORKSPACE}/OrangeFox/fox_12.1/device/asus/I006D/BoardConfig.mk || \
+#        echo 'TW_MAX_BRIGHTNESS := 255' >> ${GITHUB_WORKSPACE}/OrangeFox/fox_12.1/device/asus/I006D/BoardConfig.mk
 
     - name: Check Manifest Branch
       uses: haya14busa/action-cond@v1
       id: fox_branch
       with:
         cond: ${{ github.event.inputs.MANIFEST_BRANCH == '11.0' || github.event.inputs.MANIFEST_BRANCH == '12.1' }}
-        if_true: lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image
+        if_true: lunch ofrp${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image
         if_false: lunch omni_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka ${{ github.event.inputs.BUILD_TARGET }}image
       
     - name: Building OrangeFox
@@ -142,7 +142,7 @@ jobs:
     - name: Check if Recovery Exist
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
-        set -x ; pwd; ls -l ; echo ls -ltr out/target/product/I006D/
+        set -x ; pwd; ls -l ; echo ls -ltr out/target/product/a14m/
         echo
         echo "Output dir in script"
         ls -ltr out/target/product/${{ github.event.inputs.DEVICE_NAME }}
