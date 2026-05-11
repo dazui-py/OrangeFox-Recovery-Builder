@@ -19,7 +19,7 @@ on:
       DEVICE_TREE_BRANCH:
         description: 'Custom Recovery Tree Branch'
         required: true
-        default: 'a14mnsxx-user-15-AP3A.240905.015.A2-A145RXXSCDZA1-release-keys'
+        default: 'ofrp-12.1'
       DEVICE_PATH:
         description: 'Specify your device path.'
         required: true
@@ -40,7 +40,7 @@ on:
       LDCHECK:
         description: 'Path of blobs to check' 
         required: true
-        default: 'vendor/bin/hw/android.hardware.security.keymint-service'
+        default: 'vendor/bin/hw/android.hardware.security.keymint-service vendor/bin/hw/android.hardware.gatekeeper@1.0-service'
       RECOVERY_TAR:
         description: 'Release recovery.tar For Samsung devices'
         required: false
@@ -118,7 +118,7 @@ jobs:
       id: fox_branch
       with:
         cond: ${{ github.event.inputs.MANIFEST_BRANCH == '11.0' || github.event.inputs.MANIFEST_BRANCH == '12.1' }}
-        if_true: lunch ofrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image
+        if_true: lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image
         if_false: lunch omni_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka ${{ github.event.inputs.BUILD_TARGET }}image
       
     - name: Building OrangeFox
