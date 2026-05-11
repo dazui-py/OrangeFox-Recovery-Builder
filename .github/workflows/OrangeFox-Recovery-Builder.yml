@@ -235,7 +235,10 @@ jobs:
         mv -n libneeds ${{ env.FILE_PATH }}/recovery/root/
         mv -n ldcheck ${{ env.FILE_PATH }}/recovery/root/
         cd ${{ env.FILE_PATH }}/recovery/root/
-        python3 ldcheck -p system/lib64:vendor/lib64:system/lib:vendor/lib -d ${{ github.event.inputs.LDCHECK }}
+        for blob in ${{ github.event.inputs.LDCHECK }}; do
+        echo "== Checking $blob =="
+        python3 ldcheck -p system/lib64:vendor/lib64:system/lib:vendor/lib -d "$blob"
+        done
         echo "Done checking missing dependencies. Review, and reconfigure your tree."
       continue-on-error: true
 
